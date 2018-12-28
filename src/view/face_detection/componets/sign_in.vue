@@ -1,0 +1,106 @@
+<template>
+  <div style="width:80%;height:100%;" id="sign_in_data"></div>
+</template>
+
+<script>
+  import echarts from 'echarts';
+  export default {
+    name: "sign_in_data",
+    // props:['monthlist'],
+    data() {
+      return {
+        serviceRequestCharts: '',
+        option: {
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              type: 'cross',
+              crossStyle: {
+                color: '#ccc'
+              }
+            }
+          },
+          toolbox: {
+            feature: {
+              dataView: {show: true, readOnly: false},
+              magicType: {show: true, type: ['line', 'bar']},
+              restore: {show: true},
+              saveAsImage: {show: true}
+            }
+          },
+          legend: {
+            data: ['应到人数','实到人数']
+          },
+          xAxis: [
+            {
+              type: 'category',
+              // name: '日期',
+              // nameRotate: -60,
+              // nameGap:-2,
+              data: ['周一','周二','周三','周四','周五'],
+            }
+          ],
+          yAxis: [
+            {
+              type: 'value',
+              name: '人数',
+            },
+          ],
+          series: [
+            {
+              name: '应到人数',
+              type: 'bar',
+              data: [40,40,40,40,40],
+              itemStyle: {
+                normal: {
+                  color: '#3398DB',
+                }
+              },
+            },
+            {
+              name: '实到人数',
+              type: 'bar',
+              data: [38,40,32,36,40,40],
+              itemStyle: {
+                normal: {
+                  color: '#3398DB',
+                }
+              },
+            },
+          ]
+        },
+      };
+    },
+    watch: {
+      // monthlist: function (newVal, oldVal) {
+      //   if (newVal !== oldVal) {
+      //     this.showGraph();
+      //   }
+      // },
+    },
+    mounted() {
+      this.serviceRequestCharts = echarts.init(document.getElementById('sign_in_data'));
+      this.serviceRequestCharts.setOption(this.option);
+    },
+    methods: {
+      showGraph() {
+        // console.log("sdfasd===",this.monthlist);
+        // this.option.xAxis[0].data = this.monthlist.map(item=>{
+        //   return item.time
+        // });
+        // this.option.series[0].data = this.monthlist.map(item=>{
+        //   return item.count
+        // });
+
+        // this.serviceRequestCharts.setOption(this.option);
+      },
+    },
+    // created(){
+    //   this.showGraph();
+    // }
+  };
+</script>
+
+<style scoped>
+
+</style>

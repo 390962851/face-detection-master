@@ -42,7 +42,37 @@
             </i-col>
           </Row>
         </i-col>
+        <i-col :md="24" :lg="16">
+          <Row :gutter="10">
+            <i-col :xs="24" :sm="12" :md="12" :style="{marginBottom: '10px'}">
+              <infor-card id-name="user_created_count"
+                          :end-val="count.history_listen"
+                          iconType="ios-people"
+                          color="#2d8cf0"
+                          intro-text="应到人数"/>
+            </i-col>
+            <i-col :xs="24" :sm="12" :md="12" :style="{marginBottom: '10px'}">
+              <infor-card
+                id-name="visit_count"
+                :end-val="count.today_listen"
+                iconType="ios-eye"
+                color="#ff9900"
+                :iconSize="50"
+                intro-text="实到人数"/>
+            </i-col>
+            <i-col :xs="24" :sm="12" :md="12" :style="{marginBottom: '10px'}">
+              <p>当前班级：
+                <Tag type="dot" color="primary">{{className}}</Tag>
+              </p>
+            </i-col>
+            <i-col :xs="24" :sm="12" :md="12" :style="{marginBottom: '10px'}">
+              <name-list></name-list>
+            </i-col>
+          </Row>
+        </i-col>
+        </i-col>
       </Row>
+
     </Card>
 
     <Card class="margin-top-10">
@@ -54,7 +84,7 @@
             签到情况
           </p>
           <div class="line-chart-con">
-
+            <sign-in></sign-in>
           </div>
         </Card>
         </Col>
@@ -66,7 +96,7 @@
             <Icon type="android-star"></Icon>
           </p>
           <div class="line-chart-con">
-
+            <carefulness-class></carefulness-class>
           </div>
         </Card>
         </Col>
@@ -77,15 +107,31 @@
 
 <script>
   import {formatFullDate} from '@/libs/filters';
-
+  import countUp from './componets/countUp.vue';
+  import inforCard from './componets/inforCard.vue';////首页tag组件
+  import nameList from './componets/name_list.vue';//学生名单
+  import signIn from './componets/sign_in.vue';//签到情况
+  import carefulnessClass from './componets/carefulness_class.vue';//听课认真度
   export default {
     name: "home_page",
     components: {
-      formatFullDate
+      formatFullDate,
+      inforCard,
+      countUp,
+      nameList,
+      signIn,
+      carefulnessClass,
     },
     data() {
       return {
         hourtime: '2018-12-28',
+        count: {
+          history_listen: 40, //应到人数
+          today_listen: 38,  //实到人数
+          total_interaction: 0, //总互动量
+          today_interaction: 0, //今日互动量
+        },
+        className: 'RB软工卓越161',
       };
     },
     computed: {

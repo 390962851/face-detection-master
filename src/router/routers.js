@@ -27,7 +27,7 @@ export default [
     redirect: '/home',
     component: Main,
     meta: {
-      hideInMenu: false,
+      // hideInMenu: false,
       // notCache: true,
       icon: 'logo-buffer',
       title: '首页'
@@ -39,51 +39,71 @@ export default [
         meta: {
           hideInMenu: true,
           title: '首页',
-          notCache: true
+          // notCache: true
         },
         component: () => import('@/view/face_detection/home_page.vue')
         // component: () => import('@/view/single-page/home/home.vue')
+      },
+    ]
+  },
+  {
+    path: '/homepage',
+    name: 'homepage',
+    meta: {
+      icon: 'logo-buffer',
+      title: '首页2'
+    },
+    component: Main,
+    children: [
+      {
+        path: 'sss',
+        name: 'sss',
+        meta: {
+          icon: 'md-grid',
+          title: '首页3'
+        },
+        component: () => import('@/view/single-page/home/home.vue')
       }
     ]
   },
-  // {
-  //   path: '/components',
-  //   name: 'components',
-  //   meta: {
-  //     icon: 'logo-buffer',
-  //     title: '组件'
-  //   },
-  //   component: Main,
-  //   children: [
-  //     {
-  //       path: 'tables_page',
-  //       name: 'tables_page',
-  //       meta: {
-  //         icon: 'md-grid',
-  //         title: '多功能表格'
-  //       },
-  //       component: () => import('@/view/components/tables/tables.vue')
-  //     },
-  //     {
-  //       path: 'markdown_page',
-  //       name: 'markdown_page',
-  //       meta: {
-  //         icon: 'logo-markdown',
-  //         title: 'Markdown编辑器'
-  //       },
-  //       component: () => import('@/view/components/markdown/markdown.vue')
-  //     },
-  //     {
-  //       path: 'editor_page',
-  //       name: 'editor_page',
-  //       meta: {
-  //         icon: 'ios-create',
-  //         title: '富文本编辑器'
-  //       },
-  //       component: () => import('@/view/components/editor/editor.vue')
-  //     },
-  //   ]
-  // },
+  {
+    path: '/components',
+    name: 'components',
+    meta: {
+      icon: 'logo-buffer',
+      title: '组件'
+    },
+    component: Main,
+    children: [
+      {
+        path: 'tables_page',
+        name: 'tables_page',
+        meta: {
+          icon: 'md-grid',
+          title: '多功能表格'
+        },
+        component: () => import('@/view/components/tables/tables.vue')
+      },
+      {
+        path: 'markdown_page',
+        name: 'markdown_page',
+        meta: {
+          icon: 'logo-markdown',
+          title: 'Markdown编辑器'
+        },
+        component: () => import('@/view/components/markdown/markdown.vue')
+      },
+      {
+        path: 'editor_page',
+        name: 'editor_page',
+        meta: {
+          icon: 'ios-create',
+          title: '富文本编辑器'
+        },
+        component: () => import('@/view/components/editor/editor.vue')
+      },
+    ]
+  },
 
   {
     path: '/401',
