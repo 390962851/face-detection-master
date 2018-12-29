@@ -1,5 +1,5 @@
 <template>
-  <div style="width:80%;height:100%;" id="sign_in_data"></div>
+  <div style="width:85%;height:100%;" id="sign_in_data"></div>
 </template>
 
 <script>
@@ -21,6 +21,7 @@
             }
           },
           toolbox: {
+            right: '10%',
             feature: {
               dataView: {show: true, readOnly: false},
               magicType: {show: true, type: ['line', 'bar']},
@@ -44,6 +45,8 @@
             {
               type: 'value',
               name: '人数',
+              min: 0,
+              max: 80,
             },
           ],
           series: [
@@ -53,14 +56,14 @@
               data: [40,40,40,40,40],
               itemStyle: {
                 normal: {
-                  color: '#3398DB',
+                  color: '#c23531',
                 }
               },
             },
             {
               name: '实到人数',
               type: 'bar',
-              data: [38,40,32,36,40,40],
+              data: [38,40,32,36,40],
               itemStyle: {
                 normal: {
                   color: '#3398DB',

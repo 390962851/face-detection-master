@@ -1,5 +1,5 @@
 <template>
-  <div style="width:100%;height:100%;" id="carefulness_data"></div>
+  <div style="width:80%;height:100%;" id="carefulness_data"></div>
 </template>
 
 <script>
@@ -10,12 +10,16 @@
       return {
         serviceRequestCharts: '',
         option: {
-          // color: colors,
+          color: ['#5793f3', '#d14a61', '#675bba'],
+          title: {
+            subtext: '',
+            x: 'left'
+          },
           tooltip: {
             trigger: 'axis',
           },
           legend: {
-            // data:['互动量'],
+            data:['实到人数','上课认真度'],
           },
           grid: {
             top: 60,
@@ -37,16 +41,15 @@
             {
               type: 'category',
               boundaryGap: false,
+              name: '周数',
               axisTick: {
                 alignWithLabel: true
               },
               axisLine: {
                 onZero: false,
-                // lineStyle: {
-                //   color: colors[1]
-                // }
               },
-              data: ['1','1','1','1','1','1','1','1','1','1','1',],
+              data: ['1','2','3','4','5','6','7','8','9','10','11',
+                '12','13','14','15','16','17','18','19'],
             }
           ],
           yAxis: [
@@ -54,7 +57,46 @@
               type: 'value'
             }
           ],
-          series: [],
+          series: [
+            {
+              name: '实到人数',
+              type: 'line',
+              smooth: true,
+              data: [40,40,38,35,40,36,39,32,35],
+            },
+            {
+              name: '认真度',
+              type: 'line',
+              smooth: true,
+              data: [40,38,39,36,35,34,39],
+              markPoint: {
+                data: [
+                  {name: '最高人数', type: 'max'},
+                  {name: '最低人数', type: 'min'},
+                ]
+              },
+              markLine: {
+                data: [
+                  {type: 'average', name: '平均值'},
+                  [{
+                    symbol: 'none',
+                    x: '90%',
+                    yAxis: 'max'
+                  }, {
+                    symbol: 'circle',
+                    label: {
+                      normal: {
+                        position: 'start',
+                        formatter: '最大值'
+                      }
+                    },
+                    type: 'max',
+                    name: '最高点'
+                  }]
+                ]
+              }
+            },
+          ],
         },
       };
     },

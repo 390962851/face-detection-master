@@ -68,11 +68,15 @@
             <i-col :xs="24" :sm="12" :md="12" :style="{marginBottom: '10px'}">
               <name-list></name-list>
             </i-col>
+            <i-col :xs="24" :sm="12" :md="12" :style="{marginBottom: '10px'}">
+              <p>课&nbsp&nbsp程&nbsp名：
+                <Tag type="dot" color="primary">{{courseName}}</Tag>
+              </p>
+            </i-col>
           </Row>
         </i-col>
         </i-col>
       </Row>
-
     </Card>
 
     <Card class="margin-top-10">
@@ -83,6 +87,7 @@
             <Icon type="ios-shuffle-strong"></Icon>
             签到情况
           </p>
+          <p class="card-title">时间：{{hourtime}}</p>
           <div class="line-chart-con">
             <sign-in></sign-in>
           </div>
@@ -132,6 +137,7 @@
           today_interaction: 0, //今日互动量
         },
         className: 'RB软工卓越161',
+        courseName: '计算机组成原理',
       };
     },
     computed: {

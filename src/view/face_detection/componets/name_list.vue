@@ -2,7 +2,7 @@
   <div style="margin-top: 10px">
     <Button @click="value4 = true" type="primary">班级名单</Button>
     <Drawer :closable="true" width="540" v-model="value4">
-      <Row>
+      <Row style="height: 20px">
         <Col span="12">
         <p :style="pStyle">行政班级：{{className}}</p>
         </Col>
@@ -11,9 +11,20 @@
         </Col>
       </Row>
       <Divider/>
+      <p :style="pStyle">未到人员</p>
+      <div class="demo-drawer-profile">
+        <Row>
+          <Col>
+          <Tag v-for="item in wordlist" :key="item" :name="item" color="red">{{ item.name }}
+          </Tag>
+          </Col>
+        </Row>
+      </div>
+      <Divider/>
+
       <p :style="pStyle">名单列表</p>
       <div class="demo-drawer-profile">
-        <Table height="640" :columns="columns" :data="namelist"></Table>
+        <Table border height="640" @on-selection-change="selection_name" :columns="columns" :data="namelist"></Table>
       </div>
     </Drawer>
   </div>
@@ -23,6 +34,7 @@
     data() {
       return {
         value4: false,
+        wordlist: [],
         pStyle: {
           fontSize: '16px',
           color: 'rgba(0,0,0,0.85)',
@@ -34,6 +46,11 @@
         classNumber: '40',
         columns: [
           {
+            type: 'selection',
+            width: 50,
+            align: 'center'
+          },
+          {
             type: 'index',
             title: '序号',
           },
@@ -43,45 +60,60 @@
           },
           {
             title: '学号',
-            key: 'date'
+            key: 'sid'
           },
         ],
         namelist: [
           {
             name: 'John Brown',
-            date: '2016-10-03'
+            sid: '2016-10-03',
           },
           {
             name: 'Jim Green',
-            date: '2016-10-01'
+            sid: '2016-10-01',
           },
           {
             name: 'Joe Black',
-            date: '2016-10-02'
+            sid: '2016-10-02',
+            id: 3,
           },
           {
             name: 'Jon Snow',
-            date: '2016-10-04'
+            sid: '2016-10-04',
+            id: 4,
           },
           {
             name: 'John Brown',
-            date: '2016-10-03'
+            sid: '2016-10-03',
+            id: 5,
           },
           {
             name: 'Jim Green',
-            date: '2016-10-01'
+            sid: '2016-10-01',
+            id: 6,
           },
           {
             name: 'Joe Black',
-            date: '2016-10-02'
+            sid: '2016-10-02'
           },
           {
             name: 'Jon Snow',
-            date: '2016-10-04'
+            sid: '2016-10-04'
           }
         ],
       };
-    }
+    },
+    methods: {
+      selection_name(status) {
+        this.wordlist = status.map(item => {
+          return {
+            name:item.name,
+            sid: item.sid,
+          };
+        });
+        // console.log('===', status[0].name);
+      },
+    },
   };
 </script>
 <style>
