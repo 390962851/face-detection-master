@@ -15,7 +15,7 @@
       <div class="demo-drawer-profile">
         <Row>
           <Col>
-          <Tag v-for="item in wordlist" :key="item" :name="item" color="red">{{ item.name }}
+          <Tag v-for="item in wordlist" color="red">{{ item.name }}
           </Tag>
           </Col>
         </Row>
@@ -105,12 +105,13 @@
     },
     methods: {
       selection_name(status) {
-        this.wordlist = status.map(item => {
-          return {
-            name:item.name,
-            sid: item.sid,
-          };
-        });
+        this.wordlist = status;
+        // this.wordlist = status.map(item => {
+        //   return {
+        //     name:item.name,
+        //     sid: item.sid,
+        //   };
+        // });
         // console.log('===', status[0].name);
       },
     },

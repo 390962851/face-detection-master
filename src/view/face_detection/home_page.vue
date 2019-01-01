@@ -22,7 +22,7 @@
                       <div>
                         <b class="card-user-infor-name">{{ welcomeMsg }}</b>
                         <!--<b class="card-user-infor-name">{{ user?user.nickName:'-' }}</b>-->
-                        <b class="card-user-infor-name">徐硕教师</b>
+                        <b class="card-user-infor-name">{{userName}}教师</b>
                         <p>super admin</p>
                       </div>
                     </Row>
@@ -138,6 +138,7 @@
         },
         className: 'RB软工卓越161',
         courseName: '计算机组成原理',
+        userName: '',
       };
     },
     computed: {
@@ -154,7 +155,23 @@
       lastLoginDate() {
         return this.user && this.user.lastLoginDate ? formatFullDate(this.user.lastLoginDate) : '-';
       },
-    }
+    },
+    methods:{
+      //获取用户信息
+      getUserMessage(){
+        this.$http.getUserMessage()
+          .then(res =>{
+            // console.log(res.data.list[0].name);
+            this.userName = res.data.list.name;
+          })
+          .catch(error =>{
+            console.log(error);
+          });
+      },
+    },
+    created(){
+      this.getUserMessage();
+    },
   };
 </script>
 
