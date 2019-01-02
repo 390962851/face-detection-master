@@ -62,13 +62,13 @@
               name: '实到人数',
               type: 'line',
               smooth: true,
-              data: [40,40,38,35,40,36,39,32,35],
+              data: [],
             },
             {
               name: '认真度',
               type: 'line',
               smooth: true,
-              data: [40,38,39,36,35,34,39],
+              data: [],
               markPoint: {
                 data: [
                   {name: '最高人数', type: 'max'},
@@ -105,19 +105,25 @@
       this.serviceRequestCharts.setOption(this.option);
     },
     methods: {
-      getFrequencyRank() {
-        this.$http.get('')
-          .then(res => {
-            // console.log("frequence_rank", res);
+      getRate(){
+        this.$http.getRate()
+          .then(res =>{
+            // console.log(res.data.list);
+            this.option.series[0].data = res.data.list.map(item=>{
+              return item.shoudNum
+            });
+            this.option.series[1].data = res.data.list.map(item=>{
+              return item.rate
+            });
             this.serviceRequestCharts.setOption(this.option);
           })
-          .catch(error => {
+          .catch(error =>{
             console.log(error);
           });
       },
     },
     created() {
-      // this.getFrequencyRank();
+      this.getRate();
     }
   };
 </script>

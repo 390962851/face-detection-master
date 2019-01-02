@@ -53,7 +53,7 @@
             {
               name: '应到人数',
               type: 'bar',
-              data: [40,40,40,40,40],
+              data: [],
               itemStyle: {
                 normal: {
                   color: '#c23531',
@@ -63,7 +63,7 @@
             {
               name: '实到人数',
               type: 'bar',
-              data: [38,40,32,36,40],
+              data: [],
               itemStyle: {
                 normal: {
                   color: '#3398DB',
@@ -74,33 +74,31 @@
         },
       };
     },
-    watch: {
-      // monthlist: function (newVal, oldVal) {
-      //   if (newVal !== oldVal) {
-      //     this.showGraph();
-      //   }
-      // },
-    },
     mounted() {
       this.serviceRequestCharts = echarts.init(document.getElementById('sign_in_data'));
       this.serviceRequestCharts.setOption(this.option);
     },
     methods: {
-      showGraph() {
-        // console.log("sdfasd===",this.monthlist);
-        // this.option.xAxis[0].data = this.monthlist.map(item=>{
-        //   return item.time
-        // });
-        // this.option.series[0].data = this.monthlist.map(item=>{
-        //   return item.count
-        // });
-
-        // this.serviceRequestCharts.setOption(this.option);
+      getClassPeopleNum(){
+        this.$http.getClassPeopleNum()
+          .then(res =>{
+            // console.log(res.data.list);
+            this.option.series[0].data = res.data.list.map(item=>{
+              return item.signPeople
+            });
+            this.option.series[1].data = res.data.list.map(item=>{
+              return item.earnestPeople
+            });
+            this.serviceRequestCharts.setOption(this.option);
+          })
+          .catch(error =>{
+            console.log(error);
+          });
       },
     },
-    // created(){
-    //   this.showGraph();
-    // }
+    created(){
+      this.getClassPeopleNum();
+    }
   };
 </script>
 

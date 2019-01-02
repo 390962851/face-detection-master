@@ -73,6 +73,19 @@
                 <Tag type="dot" color="primary">{{courseName}}</Tag>
               </p>
             </i-col>
+            <i-col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
+              <upload>上传图片</upload>
+            </i-col>
+            <i-col :xs="24" :sm="6" :md="6" :style="{marginBottom: '10px'}">
+              <Button @click="show_modal = true" type="success" ghost>效果展示</Button>
+              <Modal
+                v-model="show_modal"
+                title="识别效果"
+                ok-text="确定"
+                cancel-text="取消">
+                <img class="avator-img" src="https://i.loli.net/2017/08/21/599a521472424.jpg"/>
+              </Modal>
+            </i-col>
           </Row>
         </i-col>
         </i-col>
@@ -113,6 +126,7 @@
 <script>
   import {formatFullDate} from '@/libs/filters';
   import countUp from './componets/countUp.vue';
+  import upload from './componets/upload.vue';//上传图片
   import inforCard from './componets/inforCard.vue';////首页tag组件
   import nameList from './componets/name_list.vue';//学生名单
   import signIn from './componets/sign_in.vue';//签到情况
@@ -126,19 +140,19 @@
       nameList,
       signIn,
       carefulnessClass,
+      upload,
     },
     data() {
       return {
-        hourtime: '2018-12-28',
+        hourtime: '2018-01-02',
         count: {
           history_listen: 40, //应到人数
           today_listen: 38,  //实到人数
-          total_interaction: 0, //总互动量
-          today_interaction: 0, //今日互动量
         },
-        className: 'RB软工卓越161',
+        className: '',
         courseName: '计算机组成原理',
         userName: '',
+        show_modal:false,
       };
     },
     computed: {
@@ -158,11 +172,24 @@
     },
     methods:{
       //获取用户信息
-      getUserMessage(){
-        this.$http.getUserMessage()
+      getAdminNews(){
+        this.$http.getAdminNews()
           .then(res =>{
-            // console.log(res.data.list[0].name);
-            this.userName = res.data.list.name;
+            // console.log(res.data);
+            this.userName = res.data.admin.name;
+          })
+          .catch(error =>{
+            console.log(error);
+          });
+      },
+      //获取class
+      getClassNews(){
+        this.$http.getClassNews()
+          .then(res =>{
+            // console.log(res.data);
+            this.className = res.data.clazz.name;
+            this.count.history_listen = res.data.clazz.peopleNum;
+            this.count.today_listen = res.data.clazz.num;
           })
           .catch(error =>{
             console.log(error);
@@ -170,7 +197,8 @@
       },
     },
     created(){
-      this.getUserMessage();
+      this.getAdminNews();
+      this.getClassNews();
     },
   };
 </script>

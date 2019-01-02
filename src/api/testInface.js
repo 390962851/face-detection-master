@@ -4,15 +4,28 @@ let url = 'http://localhost:8080/';
 export default {
   /*获取用户信息*/
   getUserMessage(){
-    return axios.get('https://dsn.apizza.net/mock/dc6b68abef69670b5aabd9c580b9eae4/getUserMessage');
+    // return axios.get('https://dsn.apizza.net/mock/dc6b68abef69670b5aabd9c580b9eae4/getUserMessage');
+    return axios.post('http://localhost:9000/student/getAllStudent');
   },
-  //时间年份分布
-  getALlYearDistribution(){
-    return axios.get();
+  //班级
+  getClassNews(){
+    return axios.get('http://localhost:9000/class/getClassNews');
   },
-  //性别分布
-  getAllSexDistribution(){
-    return axios.get('');
+  //admin
+  getAdminNews(){
+    return axios.get('http://localhost:9000/class/getAdminNews');
+  },
+  //拄杖图
+  getClassPeopleNum(){
+    return axios.post('http://localhost:9000/class/getClassPeopleNum');
+  },
+  //上课认真度
+  getRate(){
+    return axios.get('http://localhost:9000/class/getRate');
+  },
+  //起动识别
+  getStart(){
+    return axios.get('http://localhost:9000/class/start');
   },
   getUserTagMessage(){
     return axios({
