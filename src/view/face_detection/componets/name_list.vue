@@ -106,15 +106,21 @@
     methods: {
       selection_name(status) {
         this.wordlist = status;
-        // this.wordlist = status.map(item => {
-        //   return {
-        //     name:item.name,
-        //     sid: item.sid,
-        //   };
-        // });
-        // console.log('===', status[0].name);
+      },
+      getAdminNews(){
+        this.$http.getAdminNews()
+          .then(res =>{
+            // console.log(res.data);
+            this.userName = res.data.admin.name;
+          })
+          .catch(error =>{
+            console.log(error);
+          });
       },
     },
+    created(){
+      this.getAdminNews();
+    }
   };
 </script>
 <style>

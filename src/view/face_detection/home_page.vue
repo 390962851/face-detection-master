@@ -83,7 +83,7 @@
                 title="识别效果"
                 ok-text="确定"
                 cancel-text="取消">
-                <img class="avator-img" src="https://i.loli.net/2017/08/21/599a521472424.jpg"/>
+                <img class="avator-img" src="showSrc"/>
               </Modal>
             </i-col>
           </Row>
@@ -153,6 +153,7 @@
         courseName: '计算机组成原理',
         userName: '',
         show_modal:false,
+        showSrc: 'https://i.loli.net/2017/08/21/599a521472424.jpg',
       };
     },
     computed: {

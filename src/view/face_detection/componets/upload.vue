@@ -16,7 +16,6 @@
       error(){
         this.$http.getStart()
           .catch(item=>{
-
           });
         this.$Message.success('上传成功！');
       }
