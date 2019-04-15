@@ -97,7 +97,7 @@
       },
     },
     created(){
-      this.getClassPeopleNum();
+      // this.getClassPeopleNum();
     }
   };
 </script>

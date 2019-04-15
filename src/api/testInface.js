@@ -23,6 +23,12 @@ export default {
   getRate(){
     return axios.get('http://localhost:9000/class/getRate');
   },
+
+  ////测试接口
+  getText(){
+    return axios.get('http://10.32.6.138:8090/HumanFlowM/TerrHuman/selectTH.action');
+  },
+
   //起动识别
   getStart(){
     return axios.get('http://localhost:9000/class/start');

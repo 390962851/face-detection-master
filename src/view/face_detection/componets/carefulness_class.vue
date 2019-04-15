@@ -123,7 +123,7 @@
       },
     },
     created() {
-      this.getRate();
+      // this.getRate();
     }
   };
 </script>

@@ -119,7 +119,7 @@
       },
     },
     created(){
-      this.getAdminNews();
+      // this.getAdminNews();
     }
   };
 </script>

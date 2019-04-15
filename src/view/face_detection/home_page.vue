@@ -176,7 +176,8 @@
       getAdminNews(){
         this.$http.getAdminNews()
           .then(res =>{
-            // console.log(res.data);
+            console.log("=====");
+            console.log(res.data);
             this.userName = res.data.admin.name;
           })
           .catch(error =>{
@@ -187,7 +188,7 @@
       getClassNews(){
         this.$http.getClassNews()
           .then(res =>{
-            // console.log(res.data);
+            console.log(res.data);
             this.className = res.data.clazz.name;
             this.count.history_listen = res.data.clazz.peopleNum;
             this.count.today_listen = res.data.clazz.num;
@@ -196,10 +197,30 @@
             console.log(error);
           });
       },
+      gettext(){
+        this.$http.getText()
+          .then(res =>{
+            console.log("=====");
+            let a = [];
+            a =res.data.list.map(item=>{
+              return {
+                aa: item.th_datatime,
+                bb: item.th_number,
+                cc: item.th_ptId,
+              }
+            });
+            console.log(res.data.list);
+            console.log(a);
+          })
+          .catch(error =>{
+            console.log(error);
+          });
+      },
     },
     created(){
-      this.getAdminNews();
-      this.getClassNews();
+      // this.getAdminNews();
+      // this.getClassNews();
+      this.gettext();
     },
   };
 </script>
