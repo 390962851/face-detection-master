@@ -8,29 +8,32 @@
 <script>
 import CountUp from 'countup';
 
-function transformValue (val) {
-    let endVal = 0;
-    let unit = '';
-    if (val < 1000) {
-        endVal = val;
-    } else if (val >= 1000 && val < 1000000) {
-        endVal = parseInt(val / 1000);
-        unit = 'K+';
-    } else if (val >= 1000000 && val < 10000000000) {
-        endVal = parseInt(val / 1000000);
-        unit = 'M+';
-    } else {
-        endVal = parseInt(val / 1000000000);
-        unit = 'B+';
-    }
-    if(val == 0){
-      endVal = '--'
-    }
-    return {
-        val: endVal,
-        unit: unit
-    };
-}
+// function transformValue (val) {
+//     let endVal = 0;
+//     let unit = '';
+//     let c = '';
+//     if (val < 1000) {
+//         endVal = val;
+//     } else if (val >= 1000 && val < 1000000) {
+//         endVal = parseInt(val / 1000);
+//         unit = 'K+';
+//         c = '#ff1919';
+//     } else if (val >= 1000000 && val < 10000000000) {
+//         endVal = parseInt(val / 1000000);
+//         unit = 'M+';
+//     } else {
+//         endVal = parseInt(val / 1000000000);
+//         unit = 'B+';
+//     }
+//     if(val == 0){
+//       endVal = '--'
+//     }
+//     return {
+//         val: endVal,
+//         unit: unit,
+//         c: c,
+//     };
+// }
 
 export default {
     data () {
@@ -88,9 +91,10 @@ export default {
     mounted () {
         this.$nextTick(() => {
             setTimeout(() => {
-                let res = transformValue(this.endVal);
+                let res = this.transformValue(this.endVal);
                 let endVal = res.val;
                 this.unit = res.unit;
+                // this.color = res.c;
                 let demo = {};
                 this.demo = demo = new CountUp(this.idName, this.startVal, endVal, this.decimals, this.duration, this.options);
                 if (!demo.error) {
@@ -99,11 +103,39 @@ export default {
             }, this.delay);
         });
     },
+    methods:{
+      transformValue (val) {
+        let endVal = 0;
+        let unit = '';
+        let c = this.color;
+        if (val < 1000) {
+          endVal = val;
+        } else if (val >= 1000 && val < 1000000) {
+          endVal = parseInt(val / 1000);
+          unit = 'K+';
+          c = '#ff1919';
+        } else if (val >= 1000000 && val < 10000000000) {
+          endVal = parseInt(val / 1000000);
+          unit = 'M+';
+        } else {
+          endVal = parseInt(val / 1000000000);
+          unit = 'B+';
+        }
+        if(val == 0){
+          endVal = '--'
+        }
+        return {
+          val: endVal,
+          unit: unit,
+          c: c,
+        };
+      }
+    },
     watch: {
         endVal (val) {
-            let res = transformValue(val);
-            let endVal = res.val;
-            this.unit = res.unit;
+          let res = transformValue(val);
+          let endVal = res.val;
+          this.unit = res.unit;
             // this.demo.update(endVal);
         }
     }

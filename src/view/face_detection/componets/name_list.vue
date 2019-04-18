@@ -1,40 +1,98 @@
 <template>
   <div style="margin-top: 10px">
-    <Button @click="value4 = true" type="primary">班级名单</Button>
+    <Button @click="value4 = true" type="primary">区域编辑</Button>
+    <!--<p>注:区域编辑包括:区域添加,区域编辑</p>-->
     <Drawer :closable="true" width="540" v-model="value4">
-      <Row style="height: 20px">
-        <Col span="12">
-        <p :style="pStyle">行政班级：{{className}}</p>
-        </Col>
-        <Col span="12">
-        <p :style="pStyle">应到人数：{{classNumber}}</p>
-        </Col>
-      </Row>
-      <Divider/>
-      <p :style="pStyle">未到人员</p>
-      <div class="demo-drawer-profile">
-        <Row>
-          <Col>
-          <Tag v-for="item in wordlist" color="red">{{ item.name }}
-          </Tag>
-          </Col>
-        </Row>
-      </div>
-      <Divider/>
+      <Tabs>
+        <TabPane label="区域信息列表" icon="logo-apple">
 
-      <p :style="pStyle">名单列表</p>
-      <div class="demo-drawer-profile">
-        <Table border height="640" @on-selection-change="selection_name" :columns="columns" :data="namelist"></Table>
-      </div>
+          <!--<Row style="height: 10px">-->
+            <!--<Col span="24">-->
+            <!--<p :style="pStyle">添加区域信息</p>-->
+            <!--</Col>-->
+          <!--</Row>-->
+          <!--<Divider/>-->
+          <div class="demo-drawer-profile">
+          <Row style="height: 250px">
+            <Col>
+            <Form ref="formValidate" :model="formValidate" label-position="left"
+                  :rules="ruleValidate">
+              <Row>
+                <Col span="14">
+                <FormItem label="区域名称:" prop="name">
+                  <Input style="width: 200px" v-model="formValidate.name" placeholder="请输入名称..."></Input>
+                </FormItem>
+                </Col>
+                <Col span="10">
+                <FormItem label="区域面积:" prop="area">
+                  <Input style="width: 120px" v-model="formValidate.area" placeholder="请输入面积..." number></Input>
+                </FormItem>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                <FormItem label="区域位置:" prop="location">
+                  <Input style="width: 400px" v-model="formValidate.location" placeholder="请输入位置..."></Input>
+                </FormItem>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                <FormItem label="区域描述:" prop="remark">
+                  <Input style="width: 410px" type="textarea" v-model="formValidate.remark" placeholder="请输入区域描述..."></Input>
+                </FormItem>
+                </Col>
+              </Row>
+              <Row>
+                <Col span="16"></Col>
+                <Col span="8">
+                <FormItem>
+                  <Button type="primary" @click="handleSubmit('formValidate')">确认</Button>
+                  <Button @click="handleReset('formValidate')" style="margin-left: 8px">取消</Button>
+                </FormItem>
+                </Col>
+              </Row>
+            </Form>
+            </Col>
+          </Row>
+        </div>
+          <!--<Divider/>-->
+          <Tag :style="pStyle">区域列表</Tag>
+          <div class="demo-drawer-profile">
+            <table-list></table-list>
+          </div>
+
+        </TabPane>
+        <TabPane label="摄像头信息列表" icon="logo-windows">
+          <table-head></table-head>
+        </TabPane>
+      </Tabs>
     </Drawer>
   </div>
 </template>
 <script>
+  import tableList from './table_list';///所有区域列表信息
+  import tableHead from './table_head'; ///摄像头信息
   export default {
+    name: 'name_list',
+    components: {
+      tableList,
+      tableHead,
+    },
     data() {
+      const validateAge = (rule, value, callback) => {
+        if (!value) {
+          return callback(new Error('区域面积不能为空'));
+        } else {
+          if (!Number.isInteger(value)) {
+            callback(new Error('请输入数字'));
+          }else {
+            callback();
+          }
+        }
+      };
       return {
         value4: false,
-        wordlist: [],
         pStyle: {
           fontSize: '16px',
           color: 'rgba(0,0,0,0.85)',
@@ -42,76 +100,49 @@
           display: 'block',
           marginBottom: '16px'
         },
-        className: '卓越161',
-        classNumber: '40',
-        columns: [
-          {
-            type: 'selection',
-            width: 50,
-            align: 'center'
-          },
-          {
-            type: 'index',
-            title: '序号',
-          },
-          {
-            title: '姓名',
-            key: 'name'
-          },
-          {
-            title: '学号',
-            key: 'sid'
-          },
-        ],
-        namelist: [
-          {
-            name: 'John Brown',
-            sid: '2016-10-03',
-          },
-          {
-            name: 'Jim Green',
-            sid: '2016-10-01',
-          },
-          {
-            name: 'Joe Black',
-            sid: '2016-10-02',
-            id: 3,
-          },
-          {
-            name: 'Jon Snow',
-            sid: '2016-10-04',
-            id: 4,
-          },
-          {
-            name: 'John Brown',
-            sid: '2016-10-03',
-            id: 5,
-          },
-          {
-            name: 'Jim Green',
-            sid: '2016-10-01',
-            id: 6,
-          },
-          {
-            name: 'Joe Black',
-            sid: '2016-10-02'
-          },
-          {
-            name: 'Jon Snow',
-            sid: '2016-10-04'
-          }
-        ],
+        formValidate: {
+          name: '',
+          location: '',
+          area: '',
+          remark: '',
+        },
+        ruleValidate: {
+          name: [
+            {required: true, message: '区域名称不能为空', trigger: 'blur'}
+          ],
+          location: [
+            {required: true, message: '区域位置不能为空', trigger: 'blur'},
+          ],
+          area: [
+            // {required: true, message: '区域面积不能为空', trigger: 'blur'},
+            {validator: validateAge, trigger: 'blur'},
+          ],
+          // remark: [
+          //   {message: '区域名称不能为空', trigger: 'change'}
+          // ],
+        },
       };
     },
     methods: {
-      selection_name(status) {
-        this.wordlist = status;
+      ///获取添加区域信息
+      handleSubmit (name) {
+        this.$refs[name].validate((valid) => {
+          console.log("==valid==",valid);
+          if (valid) {
+            console.log("===formValidate===",this.formValidate);
+            this.$Message.success('添加成功!');
+          } else {
+            this.$Message.error('添加失败!');
+          }
+        })
       },
-      getAdminNews(){
-        this.$http.getAdminNews()
+      handleReset (name) {
+        this.$refs[name].resetFields();
+      },
+      AddRegionMessage(){
+        this.$http.AddRegionMessage()
           .then(res =>{
             // console.log(res.data);
-            this.userName = res.data.admin.name;
           })
           .catch(error =>{
             console.log(error);
@@ -119,7 +150,7 @@
       },
     },
     created(){
-      // this.getAdminNews();
+
     }
   };
 </script>

@@ -10,7 +10,12 @@
     data() {
       return {
         serviceRequestCharts: '',
-        option: {
+        // xAxis_name: [],
+        // yAxis_number: [],
+      };
+    },
+    mounted() {
+      const option =  {
           tooltip: {
             trigger: 'axis',
             axisPointer: {
@@ -30,7 +35,8 @@
             }
           },
           legend: {
-            data: ['应到人数','实到人数']
+            // data: ['应到人数','实到人数'],
+            data: [],
           },
           xAxis: [
             {
@@ -38,58 +44,56 @@
               // name: '日期',
               // nameRotate: -60,
               // nameGap:-2,
-              data: ['周一','周二','周三','周四','周五'],
+              // data: ['周一','周二','周三','周四','周五'],
+              data: [],
             }
           ],
           yAxis: [
             {
               type: 'value',
               name: '人数',
-              min: 0,
-              max: 80,
             },
           ],
           series: [
-            {
-              name: '应到人数',
-              type: 'bar',
-              data: [],
-              itemStyle: {
-                normal: {
-                  color: '#c23531',
-                }
-              },
-            },
-            {
-              name: '实到人数',
-              type: 'bar',
-              data: [],
-              itemStyle: {
-                normal: {
-                  color: '#3398DB',
-                }
-              },
-            },
           ]
-        },
-      };
-    },
-    mounted() {
+        };
       this.serviceRequestCharts = echarts.init(document.getElementById('sign_in_data'));
-      this.serviceRequestCharts.setOption(this.option);
+      this.serviceRequestCharts.setOption(option);
     },
     methods: {
-      getClassPeopleNum(){
-        this.$http.getClassPeopleNum()
+      getAllNumbers(){
+        this.$http.getAllNumbers()
           .then(res =>{
-            // console.log(res.data.list);
-            this.option.series[0].data = res.data.list.map(item=>{
-              return item.signPeople
-            });
-            this.option.series[1].data = res.data.list.map(item=>{
-              return item.earnestPeople
-            });
-            this.serviceRequestCharts.setOption(this.option);
+            if (res.data.list.length > 0) {
+              let x_data = res.data.list.map(item => {
+                return item.v_ptname;
+              });
+              let series_data = res.data.list.map(item => { ///v_ptnumber v_ptdata  v_ptname
+                return item.v_ptnumber;
+              });
+              let legend_name = res.data.list.map(item => {
+                return item.v_ptname;
+              });
+              // console.log(x_data);
+              // console.log(series_data);
+              // console.log(legend_name);
+              this.serviceRequestCharts.setOption(
+                {
+                  legend: [{
+                    data: legend_name,
+                  }],
+                  xAxis: [{
+                    data: x_data,
+                  }],
+                  series: [
+                    {
+                      // name: legend_name[0],
+                      data: series_data,
+                      type: 'bar',
+                    },
+                    ],
+                });
+            }
           })
           .catch(error =>{
             console.log(error);
@@ -97,7 +101,7 @@
       },
     },
     created(){
-      // this.getClassPeopleNum();
+      this.getAllNumbers();
     }
   };
 </script>

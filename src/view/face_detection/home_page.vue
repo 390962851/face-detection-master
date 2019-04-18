@@ -22,7 +22,7 @@
                       <div>
                         <b class="card-user-infor-name">{{ welcomeMsg }}</b>
                         <!--<b class="card-user-infor-name">{{ user?user.nickName:'-' }}</b>-->
-                        <b class="card-user-infor-name">{{userName}}教师</b>
+                        <b class="card-user-infor-name">{{userName}}管理员</b>
                         <p>super admin</p>
                       </div>
                     </Row>
@@ -46,46 +46,48 @@
           <Row :gutter="10">
             <i-col :xs="24" :sm="12" :md="12" :style="{marginBottom: '10px'}">
               <infor-card id-name="user_created_count"
-                          :end-val="count.history_listen"
+                          :end-val="count.current_number"
                           iconType="ios-people"
                           color="#2d8cf0"
-                          intro-text="应到人数"/>
+                          intro-text="当前人数"/>
             </i-col>
+
             <i-col :xs="24" :sm="12" :md="12" :style="{marginBottom: '10px'}">
               <infor-card
                 id-name="visit_count"
-                :end-val="count.today_listen"
+                :end-val="count.current_number2"
                 iconType="ios-eye"
                 color="#ff9900"
                 :iconSize="50"
-                intro-text="实到人数"/>
+                intro-text="摄像头数量"/>
             </i-col>
-            <i-col :xs="24" :sm="12" :md="12" :style="{marginBottom: '10px'}">
-              <p>当前班级：
-                <Tag type="dot" color="primary">{{className}}</Tag>
+            <i-col :xs="12" :sm="12" :md="12" :style="{marginBottom: '10px'}">
+              <p>当前区域：
+                <Tag type="dot" color="primary">{{userName}}</Tag>
+              </p>
+              <p>工作状态：
+                <Tag type="dot" v-for="item in counTag" :key="item"
+                     :name="item" color="success">{{ item + 1 }}号正常</Tag>
+              </p>
+              <p>区域位置：
+                <Tag type="dot" color="primary">{{userName}}</Tag>
               </p>
             </i-col>
+
+            <!--区域编辑-->
             <i-col :xs="24" :sm="12" :md="12" :style="{marginBottom: '10px'}">
               <name-list></name-list>
             </i-col>
-            <i-col :xs="24" :sm="12" :md="12" :style="{marginBottom: '10px'}">
-              <p>课&nbsp&nbsp程&nbsp名：
-                <Tag type="dot" color="primary">{{courseName}}</Tag>
-              </p>
-            </i-col>
-            <i-col :xs="24" :sm="12" :md="6" :style="{marginBottom: '10px'}">
-              <upload>上传图片</upload>
-            </i-col>
-            <i-col :xs="24" :sm="6" :md="6" :style="{marginBottom: '10px'}">
-              <Button @click="show_modal = true" type="success" ghost>效果展示</Button>
-              <Modal
-                v-model="show_modal"
-                title="识别效果"
-                ok-text="确定"
-                cancel-text="取消">
-                <img class="avator-img" src="showSrc"/>
-              </Modal>
-            </i-col>
+            <!--<i-col :xs="24" :sm="6" :md="6" :style="{marginBottom: '10px'}">-->
+              <!--<Button @click="show_modal = true" type="success" ghost>效果展示</Button>-->
+              <!--<Modal-->
+                <!--v-model="show_modal"-->
+                <!--title="识别效果"-->
+                <!--ok-text="确定"-->
+                <!--cancel-text="取消">-->
+                <!--<img class="avator-img" src="showSrc"/>-->
+              <!--</Modal>-->
+            <!--</i-col>-->
           </Row>
         </i-col>
         </i-col>
@@ -98,7 +100,7 @@
         <Card>
           <p slot="title" class="card-title">
             <Icon type="ios-shuffle-strong"></Icon>
-            签到情况
+            所有区域
           </p>
           <p class="card-title">时间：{{hourtime}}</p>
           <div class="line-chart-con">
@@ -110,11 +112,17 @@
         <Card>
           <p slot="title" class="card-title">
             <Icon type="ios-shuffle-strong"></Icon>
-            上课认真度
-            <Icon type="android-star"></Icon>
+            区域人数统计
           </p>
+          <p class="card-title">时间：{{hourtime}}</p>
+          <div class="ivu-card-extra">
+            <Tag type="border" color="red">选择区域：</Tag>
+            <i-select size="small" v-model="gid" clearable style="width:130px;">
+              <Option v-for="item in selectData" :value="item.value" :key="item.value">{{ item.label }}</Option>
+            </i-select>
+          </div>
           <div class="line-chart-con">
-            <carefulness-class></carefulness-class>
+            <carefulness-class :gid="gid"></carefulness-class>
           </div>
         </Card>
         </Col>
@@ -126,11 +134,10 @@
 <script>
   import {formatFullDate} from '@/libs/filters';
   import countUp from './componets/countUp.vue';
-  import upload from './componets/upload.vue';//上传图片
   import inforCard from './componets/inforCard.vue';////首页tag组件
-  import nameList from './componets/name_list.vue';//学生名单
-  import signIn from './componets/sign_in.vue';//签到情况
-  import carefulnessClass from './componets/carefulness_class.vue';//听课认真度
+  import nameList from './componets/name_list.vue';//区域编辑
+  import signIn from './componets/sign_in.vue';//所有区域的实时人数
+  import carefulnessClass from './componets/carefulness_class.vue';//区域人数统计
   export default {
     name: "home_page",
     components: {
@@ -140,18 +147,20 @@
       nameList,
       signIn,
       carefulnessClass,
-      upload,
     },
     data() {
       return {
-        hourtime: '2018-01-02',
+        hourtime: '',
+        colo: "#ff1919",
+        gid: '',
+        counTag:[0,1,2],
+        selectData: [],
         count: {
-          history_listen: 40, //应到人数
-          today_listen: 38,  //实到人数
+          current_number: 4000,
+          current_number2: 3,
+          current_name: "一号楼:当前人数为",
         },
-        className: '',
-        courseName: '计算机组成原理',
-        userName: '',
+        userName: '徐硕',
         show_modal:false,
         showSrc: 'https://i.loli.net/2017/08/21/599a521472424.jpg',
       };
@@ -159,6 +168,8 @@
     computed: {
       welcomeMsg() {
         let now = new Date(), hour = now.getHours();
+        let a = now.getUTCFullYear()+'-0'+(now.getMonth()+1)+'-'+(now.getUTCDay()+14);
+        this.hourtime = a;
         if (hour < 6) return "凌晨好，";
         else if (hour < 9) return "早上好，";
         else if (hour < 12) return "上午好，";
@@ -171,46 +182,35 @@
         return this.user && this.user.lastLoginDate ? formatFullDate(this.user.lastLoginDate) : '-';
       },
     },
+
     methods:{
-      //获取用户信息
-      getAdminNews(){
-        this.$http.getAdminNews()
+      //获取下拉列表的值
+      getSelectData(){
+        this.$http.getSelectData()
           .then(res =>{
-            console.log("=====");
-            console.log(res.data);
-            this.userName = res.data.admin.name;
+            this.selectData = res.data.list ? res.data.list.map(item=>{
+              return {
+                value: item.pt_id,
+                label: item.pt_name,
+              }
+            }) : [];
+            if (this.selectData.length > 0) {
+              this.gid = this.selectData[0].value;
+            }
+            // console.log("======",this.gid);
+            // console.log(this.selectData);
           })
           .catch(error =>{
             console.log(error);
           });
       },
-      //获取class
+      //获取当前人数值
       getClassNews(){
         this.$http.getClassNews()
           .then(res =>{
-            console.log(res.data);
+            // console.log(res.data);
             this.className = res.data.clazz.name;
-            this.count.history_listen = res.data.clazz.peopleNum;
-            this.count.today_listen = res.data.clazz.num;
-          })
-          .catch(error =>{
-            console.log(error);
-          });
-      },
-      gettext(){
-        this.$http.getText()
-          .then(res =>{
-            console.log("=====");
-            let a = [];
-            a =res.data.list.map(item=>{
-              return {
-                aa: item.th_datatime,
-                bb: item.th_number,
-                cc: item.th_ptId,
-              }
-            });
-            console.log(res.data.list);
-            console.log(a);
+            this.count.current_number = res.data.clazz.peopleNum;
           })
           .catch(error =>{
             console.log(error);
@@ -218,9 +218,8 @@
       },
     },
     created(){
-      // this.getAdminNews();
+      this.getSelectData();
       // this.getClassNews();
-      this.gettext();
     },
   };
 </script>
