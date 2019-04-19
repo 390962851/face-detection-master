@@ -55,22 +55,22 @@
             <i-col :xs="24" :sm="12" :md="12" :style="{marginBottom: '10px'}">
               <infor-card
                 id-name="visit_count"
-                :end-val="count.current_number2"
+                :end-val="count.current_numberhead"
                 iconType="ios-eye"
                 color="#ff9900"
                 :iconSize="50"
                 intro-text="摄像头数量"/>
             </i-col>
             <i-col :xs="12" :sm="12" :md="12" :style="{marginBottom: '10px'}">
-              <p>当前区域：
-                <Tag type="dot" color="primary">{{userName}}</Tag>
+              <p>区域名称：
+                <Tag type="dot" color="primary">{{count.current_name}}</Tag>
               </p>
               <p>工作状态：
                 <Tag type="dot" v-for="item in counTag" :key="item"
                      :name="item" color="success">{{ item + 1 }}号正常</Tag>
               </p>
               <p>区域位置：
-                <Tag type="dot" color="primary">{{userName}}</Tag>
+                <Tag type="dot" color="primary">{{count.current_location}}</Tag>
               </p>
             </i-col>
 
@@ -78,16 +78,6 @@
             <i-col :xs="24" :sm="12" :md="12" :style="{marginBottom: '10px'}">
               <name-list></name-list>
             </i-col>
-            <!--<i-col :xs="24" :sm="6" :md="6" :style="{marginBottom: '10px'}">-->
-              <!--<Button @click="show_modal = true" type="success" ghost>效果展示</Button>-->
-              <!--<Modal-->
-                <!--v-model="show_modal"-->
-                <!--title="识别效果"-->
-                <!--ok-text="确定"-->
-                <!--cancel-text="取消">-->
-                <!--<img class="avator-img" src="showSrc"/>-->
-              <!--</Modal>-->
-            <!--</i-col>-->
           </Row>
         </i-col>
         </i-col>
@@ -151,14 +141,16 @@
     data() {
       return {
         hourtime: '',
-        colo: "#ff1919",
         gid: '',
+        gidhead: '',
         counTag:[0,1,2],
+        timer: '',
         selectData: [],
         count: {
-          current_number: 4000,
-          current_number2: 3,
-          current_name: "一号楼:当前人数为",
+          current_number: 10,
+          current_numberhead: 3,
+          current_name: "创业楼",
+          current_location: "在北门的西侧，在一号楼的东侧",
         },
         userName: '徐硕',
         show_modal:false,
@@ -182,7 +174,24 @@
         return this.user && this.user.lastLoginDate ? formatFullDate(this.user.lastLoginDate) : '-';
       },
     },
-
+    watch: {
+      gid: function (newval, oldval) {
+        if (newval !== oldval) {
+          this.gidhead = newval;
+          console.log("gidhead==",this.gidhead);
+          this.getHomMessage();
+        }
+      },
+    },
+    mounted(){
+      if(this.timer){
+        clearInterval(this.timer);
+      }else {
+        this.timer = setInterval(() =>{
+          this.getHomMessage();
+        },10000);
+      }
+    },
     methods:{
       //获取下拉列表的值
       getSelectData(){
@@ -196,21 +205,21 @@
             }) : [];
             if (this.selectData.length > 0) {
               this.gid = this.selectData[0].value;
+              this.gidhead = this.selectData[0].value;
             }
-            // console.log("======",this.gid);
-            // console.log(this.selectData);
           })
           .catch(error =>{
             console.log(error);
           });
       },
-      //获取当前人数值
-      getClassNews(){
-        this.$http.getClassNews()
+      //主页面数据信息
+      getHomMessage(){
+        this.$http.getHomeOnlyMessage(this.gidhead)
           .then(res =>{
-            // console.log(res.data);
-            this.className = res.data.clazz.name;
-            this.count.current_number = res.data.clazz.peopleNum;
+            // console.log("==homepage==",res.data);
+            this.count.current_number = setInterval(res.data.th.th_number);
+            this.count.current_location = res.data.pt.pt_location;
+            this.count.current_name = res.data.pt.pt_name;
           })
           .catch(error =>{
             console.log(error);
@@ -219,7 +228,7 @@
     },
     created(){
       this.getSelectData();
-      // this.getClassNews();
+      this.getHomMessage();
     },
   };
 </script>

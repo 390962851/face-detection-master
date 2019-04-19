@@ -5,13 +5,6 @@
     <Drawer :closable="true" width="540" v-model="value4">
       <Tabs>
         <TabPane label="区域信息列表" icon="logo-apple">
-
-          <!--<Row style="height: 10px">-->
-            <!--<Col span="24">-->
-            <!--<p :style="pStyle">添加区域信息</p>-->
-            <!--</Col>-->
-          <!--</Row>-->
-          <!--<Divider/>-->
           <div class="demo-drawer-profile">
           <Row style="height: 250px">
             <Col>
@@ -59,9 +52,8 @@
           <!--<Divider/>-->
           <Tag :style="pStyle">区域列表</Tag>
           <div class="demo-drawer-profile">
-            <table-list></table-list>
+            <table-list :signal="singnal"></table-list>
           </div>
-
         </TabPane>
         <TabPane label="摄像头信息列表" icon="logo-windows">
           <table-head></table-head>
@@ -92,6 +84,7 @@
         }
       };
       return {
+        singnal: false,
         value4: false,
         pStyle: {
           fontSize: '16px',
@@ -129,7 +122,9 @@
         this.$refs[name].validate((valid) => {
           console.log("==valid==",valid);
           if (valid) {
-            console.log("===formValidate===",this.formValidate);
+            let a = this.formValidate;
+            this.AddRegionMessage(a);
+            console.log("===formValidate===",a);
             this.$Message.success('添加成功!');
           } else {
             this.$Message.error('添加失败!');
@@ -139,10 +134,11 @@
       handleReset (name) {
         this.$refs[name].resetFields();
       },
-      AddRegionMessage(){
-        this.$http.AddRegionMessage()
+      AddRegionMessage(data){
+        this.$http.AddRegionMessage(data)
           .then(res =>{
-            // console.log(res.data);
+            this.singnal = true;
+            console.log('===结果===',res.data);
           })
           .catch(error =>{
             console.log(error);

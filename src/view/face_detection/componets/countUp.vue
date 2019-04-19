@@ -88,21 +88,21 @@ export default {
         },
         introText: [String, Number]
     },
-    mounted () {
-        this.$nextTick(() => {
-            setTimeout(() => {
-                let res = this.transformValue(this.endVal);
-                let endVal = res.val;
-                this.unit = res.unit;
-                // this.color = res.c;
-                let demo = {};
-                this.demo = demo = new CountUp(this.idName, this.startVal, endVal, this.decimals, this.duration, this.options);
-                if (!demo.error) {
-                    demo.start();
-                }
-            }, this.delay);
-        });
-    },
+    // mounted () {
+    //     this.$nextTick(() => {
+    //         setTimeout(() => {
+    //             let res = this.transformValue(this.endVal);
+    //             let endVal = res.val;
+    //             this.unit = res.unit;
+    //             // this.color = res.c;
+    //             let demo = {};
+    //             this.demo = demo = new CountUp(this.idName, this.startVal, endVal, this.decimals, this.duration, this.options);
+    //             if (!demo.error) {
+    //                 demo.start();
+    //             }
+    //         }, this.delay);
+    //     });
+    // },
     methods:{
       transformValue (val) {
         let endVal = 0;
@@ -132,12 +132,12 @@ export default {
       }
     },
     watch: {
-        endVal (val) {
-          let res = transformValue(val);
-          let endVal = res.val;
-          this.unit = res.unit;
+        // endVal (val) {
+          // let res = transformValue(val);
+          // let endVal = res.val;
+          // this.unit = res.unit;
             // this.demo.update(endVal);
-        }
+        // }
     }
 };
 </script>

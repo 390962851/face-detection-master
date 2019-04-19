@@ -54,8 +54,7 @@
               name: '人数',
             },
           ],
-          series: [
-          ]
+          series: [],
         };
       this.serviceRequestCharts = echarts.init(document.getElementById('sign_in_data'));
       this.serviceRequestCharts.setOption(option);
@@ -90,6 +89,11 @@
                       // name: legend_name[0],
                       data: series_data,
                       type: 'bar',
+                      itemStyle: {
+                        normal:{
+                          color:'#91c7ae'
+                        },
+                      }
                     },
                     ],
                 });

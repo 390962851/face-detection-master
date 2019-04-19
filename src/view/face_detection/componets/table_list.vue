@@ -34,6 +34,7 @@
 <script>
   export default {
     name: "table_list",
+    props: ['singnal'],
     data(){
       return {
         columns: [
@@ -83,19 +84,21 @@
             // }
           },
         ],
-        data_list: [{
-          id: 110,
-          name: 'John Brown',
-          area: 18,
-          location: 'New York No. 1 Lake Park',
-          remark: 'New York No. 1 Lake Park',
-        }],
+        data_list: [],
         editIndex: -1,  // 当前聚焦的输入框的行数
         editName: '',  // 第一列输入框
         editLocation: '',
         editArea: '',
         editRemark: '',
       }
+    },
+    watch: {
+      singnal: function (newval, oldval) {
+        if (newval !== oldval) {
+          console.log("singnal===",newval);
+          // this.getIdData();
+        }
+      },
     },
     methods:{
       handleEdit (row, index) {
@@ -136,7 +139,7 @@
       }
     },
     created(){
-      // this.getAllRegionMessage();
+      this.getAllRegionMessage();
     },
   };
 </script>

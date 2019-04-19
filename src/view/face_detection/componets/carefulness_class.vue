@@ -17,14 +17,13 @@
       };
     },
     mounted() {
-        // if(this.timer){
-        //   clearInterval(this.timer);
-        // }else {
-        //   this.timer = setInterval(() =>{
-        //     this.getIdData();
-        //   },60000);
-        // }
-      // this.serviceRequestCharts.clear();
+      if(this.timer){
+        clearInterval(this.timer);
+      }else {
+        this.timer = setInterval(() =>{
+          this.getIdData();
+        },60000);
+      }
       this.serviceRequestCharts = echarts.init(document.getElementById('carefulness_data'));
       var option = {
         color: ['#5793f3', '#d14a61', '#675bba'],

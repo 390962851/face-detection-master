@@ -107,14 +107,15 @@
             }
           },
         ],
-        data_list: [{
-          id: 110,
-          name: 'John Brown',
-          area: 18,
-          location: 'New York No. 1 Lake Park',
-          remark: 'New York No. 1 Lake Park',
-        }],
+        data_list: [],
       }
+    },
+    watch: {
+      gid: function (newval, oldval) {
+        if (newval !== oldval) {
+          this.getHeadMessage(newval);
+        }
+      },
     },
     methods:{
       add_head(){
@@ -151,9 +152,10 @@
           });
       },
       ///更据id获取摄像头信息
-      getAllRegionMessage(){
-        this.$http.getAllRegionMessage()
+      getHeadMessage(data){
+        this.$http.getHeadMessage(data)
           .then(res =>{
+            // console.log("==head==",res.data.publicterritory);
             if(res.data.publicterritory.length > 0){
               this.data_list = res.data.publicterritory.map(item =>{
                 return {
@@ -173,7 +175,8 @@
       }
     },
     created(){
-      // this.getAllRegionMessage();
+      this.getSelectData();
+      // this.getHeadMessage(this.gid);
     },
   };
 </script>
